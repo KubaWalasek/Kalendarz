@@ -1,0 +1,70 @@
+{% extends 'calendar_app/base.html' %}
+{% block title %}{{ day_name }} {{ date|date:'j E Y' }}{% endblock %}
+{% block content %}
+<div class="lists">
+  <div>
+    <h3>Przypomnienia</h3>
+    <form method="post" action="{% url 'calendar_app:add_reminder' %}">
+      {% csrf_token %}
+      {{ reminder_form.date }}
+      <div class="row">
+        {{ reminder_form.time }}
+        {{ reminder_form.title }}
+      </div>
+      {{ reminder_form.description }}
+      <div><button class="btn" type="submit">Dodaj przypomnienie</button></div>
+    </form>
+
+    <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+      {% for r in reminders %}
+        <div class="item">
+          <div>
+            <div><strong>{% if r.time %}{{ r.time|time:'H:i' }} · {% endif %}{{ r.title }}</strong></div>
+            {% if r.description %}<div class="small">{{ r.description }}</div>{% endif %}
+          </div>
+          <div class="row">
+            <form method="post" action="{% url 'calendar_app:toggle_reminder' r.pk %}">{% csrf_token %}<button class="btn" type="submit">{% if r.completed %}Odhacz{% else %}Zrobione{% endif %}</button></form>
+            <form method="post" action="{% url 'calendar_app:delete_reminder' r.pk %}">{% csrf_token %}<button class="btn danger" type="submit">Usuń</button></form>
+          </div>
+        </div>
+      {% empty %}
+        <div class="small">Brak przypomnień.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <div>
+    <h3>Notatki dnia</h3>
+    <form method="post" action="{% url 'calendar_app:add_note' %}">
+      {% csrf_token %}
+      {{ note_form.date }}
+      {{ note_form.text }}
+      <div><button class="btn" type="submit">Zapisz notatkę</button></div>
+    </form>
+
+    <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+      {% for n in notes %}
+        <div class="item">
+          <div class="small" style="min-width:120px;">{{ n.created_at|date:'H:i, j E' }}</div>
+          <div style="flex:1;">{{ n.text|linebreaksbr }}</div>
+          <form method="post" action="{% url 'calendar_app:delete_note' n.pk %}">{% csrf_token %}<button class="btn danger" type="submit">Usuń</button></form>
+        </div>
+      {% empty %}
+        <div class="small">Brak notatek.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+    <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+      {% for w in workouts %}
+        <a class="item" href="{% url 'workout:workout_display' w.pk %}">
+          <div style="flex:1;">{{ w.date }} | {{ w.name }}</div>
+        </a>
+      {% empty %}
+        <div class="small">Brak notatek.</div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:16px;"><a class="btn secondary" href="{% url 'calendar_app:month' year=date.year month=date.month %}">← Powrót do miesiąca</a></div>
+{% endblock %}

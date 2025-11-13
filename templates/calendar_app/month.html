@@ -1,0 +1,41 @@
+{% extends 'calendar_app/base.html' %}
+{% load tz %}
+{% block title %}{{ month_name }} {{ year }}{% endblock %}
+{% block content %}
+<div class="grid">
+    <div class="weekday">Pon</div>
+    <div class="weekday">Wt</div>
+    <div class="weekday">Śr</div>
+    <div class="weekday">Czw</div>
+    <div class="weekday">Pt</div>
+    <div class="weekday">Sob</div>
+    <div class="weekday">Nie</div>
+    {% for item in days %}
+        {% with d=item.date %}
+            <a class="day {% if item.is_other %}other{% endif %} {% if d == today %}today{% endif %}"
+               href="{% url 'calendar_app:day' year=d.year month=d.month day=d.day %}">
+                <div class="top">
+                    <div class="num">{{ d.day }}</div>
+                    <div class="small">
+                        {% if item.reminders %}{{ item.reminders|length }} przyp.{% endif %}
+                    </div>
+                </div>
+                <div class="chips">
+                    {% for r in item.reminders|slice:':3' %}
+                        <div class="chip rem {% if r.completed %}done{% endif %}">
+                            {% if r.time %}{{ r.time|time:'H:i' }} · {% endif %}{{ r.title }}
+                        </div>
+                    {% endfor %}
+                    {% if item.notes %}
+                    <div class="chip">Zapisanych notatek: {{ item.notes|length }} </div>
+                    {% endif %}
+                    {% if item.workouts %}
+                    <div class="chip">{{ item.workouts.0.name }}</div>
+                {% endif %}
+                </div>
+            </a>
+        {% endwith %}
+    {% endfor %}
+</div>
+<div style="margin-top:16px" class="small">Kliknij w dzień, aby dodać przypomnienie lub notatkę.</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dodaj Trening</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_workout.css' %}">
+</head>
+
+<body>
+
+<div class="add-workout-container">
+    {% include 'accounts_links.html' %}
+
+    <div class="add-workout-header">
+        <h1 class="add-workout-title">Nowy Trening</h1>
+        <p class="add-workout-subtitle">Stwórz plan swojego treningu</p>
+    </div>
+
+    <form method="post" class="workout-form">
+        {% csrf_token %}
+
+        <div class="form-group form-group-with-icon">
+            <label for="id_date" class="form-label">📅 Data treningu</label>
+            <div class="form-icon"></div>
+            {{ form.date.as_widget }}
+        </div>
+
+        <div class="form-group form-group-with-icon">
+            <label for="id_type" class="form-label">🏋️ Typ treningu</label>
+            <div class="form-icon"></div>
+            {{ form.type.as_widget }}
+        </div>
+
+        <div class="form-group form-group-with-icon">
+            <label for="id_name" class="form-label">📝 Nazwa treningu (opcjonalne)</label>
+            <div class="form-icon"></div>
+            {{ form.name.as_widget }}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">⚙️ Sposób opisu treningu</label>
+            <div class="workout-type-options">
+                <div class="workout-type-option">
+                    <input type="radio"
+                           id="description"
+                           name="workout_detail_type"
+                           value="description"
+                           class="workout-type-radio"
+                           checked>
+                    <label for="description" class="workout-type-label">
+                        <span class="workout-type-icon">📝</span>
+                        <span>Opis tekstowy</span>
+                        <small style="display:block; margin-top:5px; opacity:0.8;">
+                            Prosty opis treningu
+                        </small>
+                    </label>
+                </div>
+
+                <div class="workout-type-option">
+                    <input type="radio"
+                           id="detailed"
+                           name="workout_detail_type"
+                           value="detailed"
+                           class="workout-type-radio">
+                    <label for="detailed" class="workout-type-label">
+                        <span class="workout-type-icon">📊</span>
+                        <span>Szczegółowy plan</span>
+                        <small style="display:block; margin-top:5px; opacity:0.8;">
+                            Ćwiczenia, serie, ciężary
+                        </small>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                ➡️ Dalej
+            </button>
+            <a href="{% url 'calendar_app:month' %}" class="btn btn-secondary">
+                ❌ Anuluj
+            </a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    // Dodaj klasy CSS do pól formularza Django
+    document.addEventListener('DOMContentLoaded', function() {
+        // Stylowanie pól input
+        const inputs = document.querySelectorAll('input[type="text"], input[type="date"]');
+        inputs.forEach(input => {
+            input.classList.add('form-input');
+            if (input.closest('.form-group-with-icon')) {
+                input.classList.add('form-input-with-icon');
+            }
+        });
+
+        // Stylowanie select
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.classList.add('form-select');
+            if (select.closest('.form-group-with-icon')) {
+                select.classList.add('form-input-with-icon');
+            }
+        });
+
+        // Stylowanie textarea
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.classList.add('form-textarea');
+        });
+    });
+</script>
+</body>
+</html>

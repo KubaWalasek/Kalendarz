@@ -1,0 +1,31 @@
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/account_form.css' %}">
+
+{% if messages %}
+    {% for m in messages %}
+        <div class="form-error">{{ m }}</div>
+    {% endfor %}
+{% endif %}
+{% for error in form.non_field_errors %}
+    <div class="form-error">{{ error }}</div>
+{% endfor %}
+
+<div class="form-hero">
+    <div class="form-card">
+        <form method="post" class="form">
+            {% csrf_token %}
+            <h2 class="form-title">USUWASZ KONTO</h2>
+            <p>Musisz podać swoje hasło w celu usunięcia konta.</p>
+            <div class="form-row">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <p>Czy na pewno chcesz usunąć konto?</p>
+            <button  type="submit" class="big-form-btn">Usuń</button>
+            <a class="big-form-btn-link" href="{% url 'user_account' %}">Anuluj</a>
+        </form>
+    </div>
+</div>

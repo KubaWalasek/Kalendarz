@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trening</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/workout_display.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+</head>
+
+<body>
+
+    <div class="workout-header">
+        <h1>{{ workout.name|default:workout.type }}</h1>
+        <div class="workout-meta">
+            <span class="date">📅 {{ workout.date|date:"d.m.Y" }}</span>
+            <span class="type">🏋️ {{ workout.type }}</span>
+            <span class="user">👤 {{ workout.user.username }}</span>
+        </div>
+    </div>
+
+    {% if workout.set.type == 'description' %}
+        <!-- Prosty opis treningu -->
+        <div class="workout-description">
+            <h3>Opis treningu</h3>
+            <div class="description-content">
+                {{ workout.set.text|linebreaksbr }}
+            </div>
+        </div>
+
+    {% elif workout.set.type == 'detailed' %}
+        <!-- Szczegółowy trening -->
+        <div class="workout-detailed">
+            <h3>Plan treningu</h3>
+
+            {% for exercise in workout.set.exercises %}
+                <div class="exercise-card">
+                    <h4 class="exercise-name">{{ exercise.name }}</h4>
+
+                    <div class="sets-grid">
+                        <div class="set-header">
+                            <span>Seria</span>
+                            <span>Ciężar</span>
+                            <span>Plan</span>
+                            <span>Wykonano</span>
+                        </div>
+
+                        {% for set in exercise.sets %}
+                            <div class="set-row">
+                                <span class="set-number">{{ forloop.counter }}</span>
+                                <span class="weight">{{ set.weight|floatformat:1 }} kg</span>
+                                <span class="reps-planned">{{ set.reps }} rep</span>
+                                <span class="reps-done">
+                        {% if set.done %}
+                            {{ set.done }} rep
+                            {% if set.done >= set.reps %}
+                                <span class="success">✅</span>
+                            {% else %}
+                                <span class="partial">⚠️</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="not-done">❌</span>
+                        {% endif %}
+                    </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Statystyki ćwiczenia -->
+                    <div class="exercise-stats">
+                        <span>Łącznie serii: {{ exercise.sets|length }}</span>
+                        <span>Całkowity ciężar:  kg</span>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- Ogólne statystyki -->
+            <div class="workout-stats">
+                <h4>Statystyki treningu</h4>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <span class="stat-number">{{ workout.set.exercises|length }}</span>
+                        <span class="stat-label">Ćwiczeń</span>
+                    </div>
+                    <div class="stat">
+                    <span class="stat-number">
+                        {% widthratio workout.set.exercises|length 1 1 %}
+                        {% for ex in workout.set.exercises %}
+                            {% widthratio ex.sets|length 1 1 %}
+                        {% endfor %}
+                    </span>
+                        <span class="stat-label">Serii</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">⏱️</span>
+                        <span class="stat-label">Czas treningu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="workout-empty">
+            <p>Brak szczegółów treningu</p>
+        </div>
+    {% endif %}
+
+    <div class="workout-actions">
+        <a href="{% url 'calendar_app:month' year=workout.date.year month=workout.date.month %}" class="btn secondary">← Powrót do kalendarza</a>
+        <a href="#" class="btn">Edytuj trening</a>
+        <a href="#" class="btn danger">Usuń trening</a>
+    </div>
+
+{% include 'accounts_links.html' %}
+
+</body>
+
+<style>
+ .accounts-links {
+     flex-direction: row;
+     position: fixed;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%);
+
+
+     background: rgba(255,255,255,0.95);
+     padding: 8px 10px;
+     border-radius: 12px;
+     border: 1px solid #87267f;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+    .accounts-link img{
+        width: 45px;
+        height: 45px;
+    }
+
+</style>

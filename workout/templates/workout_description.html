@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Opis Treningu</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+    <link rel="stylesheet" href="{% static 'css/workout_description.css' %}">
+</head>
+
+<body>
+<div class="workout-description-container">
+    {% include 'accounts_links.html' %}
+
+    <div class="workout-description-header">
+        <h1 class="workout-description-title">📝 Opis Treningu</h1>
+        <div class="workout-description-info">
+            <div class="workout-info-badge">
+                📅 {{ workout.date|date:"d.m.Y" }}
+            </div>
+            <div class="workout-info-badge">
+                🏋️ {{ workout.type }}
+            </div>
+            <div class="workout-info-badge">
+                📝 {{ workout.name|default:"Bez nazwy" }}
+            </div>
+        </div>
+    </div>
+
+    <form method="post" action="{% url 'workout:save_workout_description' %}" class="description-form">
+        {% csrf_token %}
+        <input type="hidden" name="workout_date" value="{{ workout.date|date:'Y-m-d' }}">
+        <input type="hidden" name="type" value="{{ workout.type }}">
+        <input type="hidden" name="name" value="{{ workout.name }}">
+
+        <div class="description-hints">
+            <h4>💡 Wskazówki do opisu treningu:</h4>
+            <ul>
+                <li>Opisz jakie ćwiczenia wykonałeś</li>
+                <li>Dodaj informacje o ciężarach i powtórzeniach</li>
+                <li>Napisz jak się czułeś podczas treningu</li>
+                <li>Zanotuj swoje przemyślenia i postępy</li>
+                <li>Możesz dodać plany na następny trening</li>
+            </ul>
+        </div>
+
+        <div class="description-form-group">
+            <label for="id_description" class="description-label">
+                ✍️ Opis treningu:
+            </label>
+            {{ description_form.description.as_widget }}
+            <div class="char-counter" id="charCounter">
+                <span id="charCount">0</span> / 2000 znaków
+            </div>
+        </div>
+
+        <div class="description-actions">
+            <button type="submit" class="btn btn-primary">
+                💾 Zapisz trening
+            </button>
+            <a href="{% url 'workout:add_workout' %}" class="btn btn-secondary">
+                ← Powrót
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Stylowanie textarea
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            textarea.classList.add('description-textarea');
+            textarea.placeholder = `Przykład:
+Dziś wykonałem trening klatki piersiowej i tricepsów.
+
+Wyciskanie sztangi płasko:
+- 4 serie po 8-10 powtórzeń
+- Ciężary: 80kg, 85kg, 85kg, 80kg
+- Dobre tempo, kontrolowane opuszczanie
+
+Wyciskanie hantli na skos:
+- 3 serie po 12 powtórzeń  
+- 2x25kg - czułem dobrą pracę mięśni
+
+Pompki diamentowe:
+- 3 serie do odmowy (12, 10, 8 powtórzeń)
+
+Samopoczucie: 8/10
+Następnym razem zwiększę ciężar w wyciskaniu płasko.`;
+
+            // Licznik znaków
+            const charCount = document.getElementById('charCount');
+            const charCounter = document.getElementById('charCounter');
+
+            function updateCharCount() {
+                const count = textarea.value.length;
+                charCount.textContent = count;
+
+                if (count > 1800) {
+                    charCounter.classList.add('danger');
+                    charCounter.classList.remove('warning');
+                } else if (count > 1500) {
+                    charCounter.classList.add('warning');
+                    charCounter.classList.remove('danger');
+                } else {
+                    charCounter.classList.remove('warning', 'danger');
+                }
+            }
+
+            textarea.addEventListener('input', updateCharCount);
+            updateCharCount(); // Initial count
+        }
+    });
+</script>
+</body>
+</html>

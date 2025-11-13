@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='pl'>
+<head>
+    <meta charset="UTF-8">
+    <title>Twój kalendarz</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account_form.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    {% block links %}{% endblock %}
+
+</head>
+
+<body>
+<div class="header">
+
+<div class="site-logo">#Twój kalendarz#</div>
+    {% include 'accounts_links.html' %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

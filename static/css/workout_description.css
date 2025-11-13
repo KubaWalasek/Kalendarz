@@ -1,0 +1,233 @@
+/* Workout Description Styles */
+.workout-description-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    position: relative;
+}
+
+.workout-description-header {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.workout-description-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.workout-description-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.workout-info-badge {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Formularz opisu */
+.description-form {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.description-form-group {
+    margin-bottom: 25px;
+}
+
+.description-label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.description-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: vertical;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    font-family: inherit;
+}
+
+.description-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.description-textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Pomocne wskazówki */
+.description-hints {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 0 12px 12px 0;
+}
+
+.description-hints h4 {
+    color: #1976d2;
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+}
+
+.description-hints ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #555;
+}
+
+.description-hints li {
+    margin-bottom: 8px;
+}
+
+/* Licznik znaków */
+.char-counter {
+    text-align: right;
+    margin-top: 10px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.char-counter.warning {
+    color: #f39c12;
+}
+
+.char-counter.danger {
+    color: #e74c3c;
+}
+
+/* Przyciski */
+.description-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #5a67d8, #6b46c1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #666;
+    border: 2px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-1px);
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .workout-description-container {
+        padding: 15px;
+    }
+
+    .description-form {
+        padding: 25px;
+    }
+
+    .workout-description-title {
+        font-size: 1.8rem;
+    }
+
+    .workout-description-info {
+        grid-template-columns: 1fr;
+    }
+
+    .description-actions {
+        flex-direction: column;
+    }
+}
+
+/* Animacje */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.description-form {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Stylowanie dla accounts-links */
+.workout-description-container .accounts-links {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    flex-direction: column;
+    background: rgba(255,255,255,0.95);
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid #87267f;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.workout-description-container .accounts-link img {
+    width: 45px;
+    height: 45px;
+}

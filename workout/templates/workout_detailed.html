@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Szczegółowy Plan Treningu</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+    <link rel="stylesheet" href="{% static 'css/workout_detailed.css' %}">
+</head>
+
+<body>
+<div class="workout-detailed-container">
+    {% include 'accounts_links.html' %}
+
+    <div class="workout-detailed-header">
+        <h1 class="workout-detailed-title">📊 Szczegółowy Plan Treningu</h1>
+        <div class="workout-info">
+            <div class="workout-info-item">
+                <div class="workout-info-label">Data</div>
+                <div class="workout-info-value">{{ workout.date|date:"d.m.Y" }}</div>
+            </div>
+            <div class="workout-info-item">
+                <div class="workout-info-label">Typ</div>
+                <div class="workout-info-value">{{ workout.type }}</div>
+            </div>
+            <div class="workout-info-item">
+                <div class="workout-info-label">Nazwa</div>
+                <div class="workout-info-value">{{ workout.name|default:"Bez nazwy" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <form id="workout-form" method="post" action="{% url 'workout:save_workout_detailed' %}" class="workout-form">
+        {% csrf_token %}
+        <input type="hidden" name="workout_date" value="{{ workout.date|date:'Y-m-d' }}">
+        <input type="hidden" name="type" value="{{ workout.type }}">
+        <input type="hidden" name="name" value="{{ workout.name }}">
+
+        <div id="exercises-container">
+            <!-- Tu będą dynamicznie dodawane ćwiczenia -->
+        </div>
+
+        <button type="button" id="add-exercise" class="btn secondary">
+            ➕ Dodaj ćwiczenie
+        </button>
+
+        <div class="form-main-actions">
+            <button type="submit" class="btn">
+                💾 Zapisz trening
+            </button>
+            <a class="btn btn-secondary" href="{% url 'workout:add_workout' %}">
+                ← Powrót
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    let exerciseCount = 0;
+
+    document.getElementById('add-exercise').addEventListener('click', function() {
+        addExercise();
+    });
+
+    function addExercise() {
+        exerciseCount++;
+        const container = document.getElementById('exercises-container');
+        const exerciseDiv = document.createElement('div');
+        exerciseDiv.className = 'exercise-block';
+        exerciseDiv.innerHTML = `
+                <input type="text" 
+                       name="exercise_${exerciseCount}_name" 
+                       placeholder="🏋️ Nazwa ćwiczenia (np. Wyciskanie sztangi)" 
+                       required 
+                       class="exercise-name-input">
+                
+                <div class="sets-container" id="sets_${exerciseCount}">
+                    <h4 style="margin: 0 0 15px 0; color: #667eea;">📋 Serie:</h4>
+                </div>
+                
+                <div class="exercise-actions">
+                    <button type="button" onclick="addSet(${exerciseCount})" class="btn secondary">
+                        ➕ Dodaj serię
+                    </button>
+                    <button type="button" onclick="removeExercise(this)" class="btn danger">
+                        🗑️ Usuń ćwiczenie
+                    </button>
+                </div>
+            `;
+
+        container.appendChild(exerciseDiv);
+        addSet(exerciseCount); // Dodaj pierwszą serię automatycznie
+    }
+
+    function addSet(exerciseId) {
+        const setsContainer = document.getElementById(`sets_${exerciseId}`);
+        const setCount = setsContainer.querySelectorAll('.set-row').length + 1;
+
+        const setDiv = document.createElement('div');
+        setDiv.className = 'set-row';
+        setDiv.innerHTML = `
+                <span>Seria ${setCount}:</span>
+                <input type="number" 
+                       name="exercise_${exerciseId}_set_${setCount}_weight" 
+                       placeholder="Ciężar (kg)" 
+                       step="0.5" 
+                       style="width: 100px;">
+                <span>kg ×</span>
+                <input type="number" 
+                       name="exercise_${exerciseId}_set_${setCount}_reps" 
+                       placeholder="Powtórzenia" 
+                       style="width: 80px;">
+                <span>=</span>
+                <input type="number" 
+                       name="exercise_${exerciseId}_set_${setCount}_done" 
+                       placeholder="Wykonane" 
+                       style="width: 80px;">
+                <button type="button" 
+                        onclick="removeSet(this)" 
+                        data-exercise-id="${exerciseId}" 
+                        class="btn danger" 
+                        style="padding: 6px 12px;">
+                    ❌
+                </button>
+            `;
+        setsContainer.appendChild(setDiv);
+    }
+
+    function updateSetNumbers(exerciseId) {
+        let setsContainer = document.getElementById('sets_' + exerciseId);
+        let setRows = setsContainer.querySelectorAll('.set-row');
+
+        for (let i = 0; i < setRows.length; i++) {
+            let row = setRows[i];
+            let span = row.querySelector('span');
+            span.textContent = 'Seria ' + (i + 1) + ':';
+        }
+    }
+
+    function removeSet(button) {
+        button.parentElement.remove();
+        let exerciseId = button.getAttribute('data-exercise-id');
+        updateSetNumbers(exerciseId);
+    }
+
+    function removeExercise(button) {
+        button.closest('.exercise-block').remove();
+    }
+
+    // Dodaj pierwsze ćwiczenie na start
+    addExercise();
+</script>
+</body>
+</html>

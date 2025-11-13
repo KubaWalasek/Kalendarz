@@ -1,0 +1,47 @@
+/* css */
+.home-link{
+    position:fixed;
+    top:12px;
+    left:50%;
+    display:flex;
+    gap:10px;
+    z-index:1000;
+
+    /* kluczowe dla równego “ramienia” */
+    padding:8px 10px;          /* równy top/bottom */
+    border:1px solid #e6eef7;  /* to dodaje po 1px na górze i dole */
+    border-radius:12px;
+    background:rgba(255,255,255,.9);
+    box-shadow:0 4px 12px rgba(10,37,64,.12); /* mniejszy cień = mniej “ciężki” dół */
+}
+
+.home-link{
+    line-height:0;   /* usuwa dodatkową pionową przestrzeń od inline elementów */
+    display:inline-flex;
+    align-items:center;
+}
+
+.home-link img{
+    display:block;   /* usuwa dolny “baseline gap” obrazka */
+    width:50px;
+    height:50px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid #d7e3f7;
+}
+
+.home-link:hover img{
+    transform:translateY(-1px) scale(1.03);
+    box-shadow:0 4px 10px rgba(25,118,210,.25);
+    filter:saturate(115%);
+}
+
+/* Dla mniejszych ekranów trochę zmniejsz */
+@media (max-width: 480px){
+    .home-link{
+        top:8px; right:8px; gap:8px; padding:5px 6px;
+    }
+    .home-link img{
+        width:24px; height:24px; border-radius:7px;
+    }
+}

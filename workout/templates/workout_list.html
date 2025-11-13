@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Treningów</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/workout_list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account_links.css' %}">
+</head>
+
+<body>
+
+<div class="workout-list-container">
+{% include 'accounts_links.html' %}
+    <div class="workout-list-header">
+        <h1 class="workout-list-title">Moje Treningi</h1>
+        <p class="workout-list-subtitle">Historia wszystkich treningów</p>
+    </div>
+
+    {% if workouts %}
+        <div class="workouts-grid">
+            {% for w in workouts %}
+                <div class="workout-card">
+                    <div class="workout-card-header">
+                        <h3 class="workout-title">{{ w.name|default:w.type }}</h3>
+                        <span class="workout-date">{{ w.date|date:"d.m.Y" }}</span>
+                    </div>
+
+                    {% if w.set.type == 'description' %}
+                        <div class="workout-description">
+                            {{ w.set.text|truncatewords:15 }}
+                        </div>
+                    {% elif w.set.type == 'detailed' %}
+                        <div class="workout-stats">
+                            <div class="workout-stat">
+                                <span class="workout-stat-value">{{ w.set.exercises|length }}</span>
+                                <span class="workout-stat-label">Ćwiczeń</span>
+                            </div>
+                            <div class="workout-stat">
+                                    <span class="workout-stat-value">
+                                        {% for exercise in w.set.exercises %}
+                                            {% for set in exercise.sets %}{% if forloop.last %}{{ forloop.parentloop.counter }}{% endif %}{% endfor %}
+                                        {% endfor %}
+                                    </span>
+                                <span class="workout-stat-label">Serii</span>
+                            </div>
+                            <div class="workout-stat">
+                                <span class="workout-stat-value">{{ w.type }}</span>
+                                <span class="workout-stat-label">Typ</span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="workout-actions">
+                        <a href="{% url 'workout:workout_display' pk=w.id %}" class="workout-btn btn-view">
+                            👁️ Zobacz
+                        </a>
+                        <a href="#" class="workout-btn btn-edit">
+                            ✏️ Edytuj
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">💪</div>
+            <h2 class="empty-state-title">Brak treningów</h2>
+            <p class="empty-state-text">Dodaj swój pierwszy trening i zacznij śledzić postępy!</p>
+            <a href="{% url 'workout:add_workout' %}" class="btn-add-workout">
+                ➕ Dodaj trening
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="workout-controls">
+        <div class="control-group">
+            <label class="control-label">Sortuj:</label>
+            <select class="control-select" id="sortSelect">
+                <option value="-date">Najnowsze</option>
+                <option value="date">Najstarsze</option>
+                <option value="type">Typ treningu</option>
+                <option value="name">Nazwa A-Z</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Filtruj:</label>
+            <select class="control-select" id="filterSelect">
+                <option value="all">Wszystkie</option>
+                <option value="cardio">Cardio</option>
+                <option value="strength">Siłowy</option>
+                <option value="flexibility">Stretching</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<style>
+ .accounts-links {
+    flex-direction: column;
+    margin-top: 1px;
+
+    /* Responsywne centrowanie: */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.95);
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid #87267f;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+    .accounts-link img{
+        width: 45px;
+        height: 45px;
+    }
+
+</style>
