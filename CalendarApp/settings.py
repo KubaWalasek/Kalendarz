@@ -120,12 +120,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CalendarApp.wsgi.application'
 
 
+# ... existing code ...
+
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.parse(
             os.environ['DATABASE_URL'],
-            conn_max_age=600,
-            ssl_require=True,  # sslmode=require dla Railway
+            conn_max_age=0,  # wyłącz persistent connections (bezpieczniejsze na Railway)
+            conn_health_checks=True,  # automatyczne sprawdzanie czy połączenie działa
+            ssl_require=False,  # usuń to – Railway Postgres już ma SSL w URL
         )
     }
 else:
@@ -135,6 +138,8 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+# ... existing code ...
 
 
 
