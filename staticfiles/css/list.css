@@ -1,0 +1,113 @@
+.announcement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 16px 24px;
+    padding: 10px 6px 14px 6px;
+}
+
+.center-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.announcement-tile {
+    background: var(--blue-50, #f5faff);
+    box-shadow: 0 4px 20px rgba(25,118,210,0.08);
+    display: flex;
+    flex-direction: row;
+    min-height: 40px;
+    transition: box-shadow 0.16s, border-color 0.16s;
+    overflow: hidden;
+    position: relative;
+
+}
+.announcement-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+    border-radius: 18px;
+    transition: box-shadow 0.14s, border-color 0.14s;
+    justify-content: right;
+}
+.announcement-tile:hover {
+    box-shadow: 0 8px 32px rgba(25,118,210,0.18);
+    border-color: #87267f;
+}
+
+.announcement-tile-main {
+    flex: 1;
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    border: 1px solid #87267f;
+    border-radius: 8px;
+    color: #87267f;
+    line-height: 1.5;
+    font-weight: 800;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.announcement-tile-title {
+    font-size: 14px;
+    color: var(--blue, #1976d2);
+    font-weight: 700;
+    word-break: break-word;
+    padding-top: 7px ;
+    text-align: center;
+}
+
+.announcement-tile-content {
+    font-size: 15px;
+    color: #87267f;
+    margin-bottom: 13px;
+    line-height: 1.5;
+}
+
+.announcement-tile-footer {
+    font-size: 13px;
+    color: #888;
+    margin-top: auto;
+}
+
+.announcement-tile-aside {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    min-width: 100px;
+    padding: 0 20px 20px 0;
+}
+
+.announcement-category {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #90caf9;
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 68px;
+    padding: 8px 17px;
+    border-radius: 14px 0 8px 15px;
+    text-align: center;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    box-shadow: 0 1px 6px rgba(25,118,210,.10);
+    margin-left: 12px;
+}
+
+@media (max-width: 900px) {
+    .announcement-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .announcement-tile-main {
+        padding: 24px 18px 14px 18px;
+    }
+    .announcement-tile-aside {
+        justify-content: flex-end;
+        padding: 0 12px 14px 0;
+    }
+}
