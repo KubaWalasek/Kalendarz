@@ -1,1 +1,1 @@
-web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn CalendarApp.wsgi --bind 0.0.0.0:$PORT --log-file -
+web: echo "DATABASE_URL=$DATABASE_URL" && python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn CalendarApp.wsgi --bind 0.0.0.0:$PORT --log-file -
