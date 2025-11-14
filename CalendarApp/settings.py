@@ -42,6 +42,38 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "Lax"
 
 
+# ... existing code ...
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Minimalne logowanie wyjątków do stderr (widoczne w Railway Logs)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",  # 500 i stacktrace
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "WARNING",  # podnieś do INFO aby widzieć SQL
+            "propagate": False,
+        },
+    },
+}
+# ... existing code ...
+
+
 # Application definition
 
 INSTALLED_APPS = [
