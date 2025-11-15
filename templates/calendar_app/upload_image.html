@@ -1,0 +1,15 @@
+
+
+{% block content %}
+    <div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 15px;">
+        <h2>🖼️ Wgraj zdjęcie do tła kalendarza</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" accept="image/*" required style="margin: 20px 0;">
+            <button type="submit" class="btn">📤 Ustaw jako tło</button>
+        </form>
+
+        <a href="{% url 'calendar_app:month' %}" class="btn secondary">← Powrót do kalendarza</a>
+    </div>
+{% endblock %}>

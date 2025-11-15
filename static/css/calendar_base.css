@@ -1,7 +1,7 @@
 /* Variables */
 :root {
     --bg: #ffffff;
-    --panel: #6ab8bf;
+    --panel: #ffffff;
     --accent: #e8ebef;
     --text: #100f0f;
     --muted: #100f0f;
@@ -112,7 +112,7 @@ header h1 {
 /* Day Cell */
 .day {
     border-radius: 10px;
-    background: linear-gradient(135deg, #d0c1ea 0%, #448cac 100%);
+    background: linear-gradient(135deg, #d0c1ea 5%, #448cac 10%);
     min-height: 120px;
     padding: 8px;
     display: flex;
@@ -148,7 +148,7 @@ header h1 {
 }
 
 .chip {
-    background: linear-gradient(135deg, #eac1dd 0%, #cc412f 100%);
+    background: linear-gradient(135deg, #eac1dd 0%, #ffffff 100%);
     border-radius: 8px;
     padding: 4px 6px;
     font-size: 12px;
@@ -159,7 +159,7 @@ header h1 {
 }
 
 .chip.rem {
-    background: linear-gradient(135deg, #eac1e5 0%, #a0cc2f 100%);
+    background: linear-gradient(135deg, #eac1e5 0%, #cc2f2f 100%);
 }
 
 .chip.done {

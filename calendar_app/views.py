@@ -1,7 +1,9 @@
 from datetime import date as date_cls, datetime, timedelta
 import calendar
 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
@@ -74,7 +76,8 @@ def month_view(request: HttpRequest, year: int | None = None, month: int | None 
         "current_month": first_day,
         "prev_month": {"year": prev_month_date.year, "month": prev_month_date.month},
         "next_month": {"year": next_month_date.year, "month": next_month_date.month},
-        'url': 'month'
+        'url': 'month',
+        'background_image': request.session.get('background_image'),
     }
 
     return render(request, "calendar_app/month.html", context )
@@ -182,3 +185,17 @@ class DeleteNoteView(LoginRequiredMixin, View):
         y, m, d = note.date.year, note.date.month, note.date.day
         note.delete()
         return redirect("calendar_app:day", year=y, month=m, day=d)
+
+
+def upload_image(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        przeslany_plik_obraz = request.FILES['image']
+        system_plikow = FileSystemStorage(location=settings.MEDIA_ROOT, base_url=settings.MEDIA_URL)
+        zapisana_nazwa_pliku = system_plikow.save(przeslany_plik_obraz.name, przeslany_plik_obraz)
+        adres_url_zapisanego_pliku = system_plikow.url(zapisana_nazwa_pliku)
+
+        request.session['background_image'] = adres_url_zapisanego_pliku
+
+        return redirect('calendar_app:month')
+
+    return render(request, 'calendar_app/upload_image.html')

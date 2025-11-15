@@ -13,4 +13,5 @@ urlpatterns = [
     path("reminder/<int:pk>/toggle/", ToggleReminderView.as_view(), name="toggle_reminder"),
     path("reminder/<int:pk>/delete/", DeleteReminderView.as_view(), name="delete_reminder"),
     path("note/<int:pk>/delete/", DeleteNoteView.as_view(), name="delete_note"),
+    path("upload_image/", views.upload_image, name="upload_image"),
 ]

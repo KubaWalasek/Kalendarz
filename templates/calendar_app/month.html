@@ -3,6 +3,24 @@
 {% block title %}{{ month_name }} {{ year }}{% endblock %}
 {% block content %}
 
+
+    <style>
+        {% if background_image %}
+            body {
+                background-image: url('{{ background_image }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+
+            .container {
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 15px;
+                padding: 20px;
+            }
+        {% endif %}
+    </style>
+
     <div class="grid">
         <div class="weekday"><span class="mobile-hide">Pon</span><span class="mobile-show">P</span></div>
         <div class="weekday"><span class="mobile-hide">Wt</span><span class="mobile-show">W</span></div>

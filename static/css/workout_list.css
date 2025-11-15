@@ -225,6 +225,8 @@
 
     .workout-list-title {
         font-size: 2rem;
+        margin-top: 20px;
+        padding-top: 40px;
     }
 
     .workout-controls {
