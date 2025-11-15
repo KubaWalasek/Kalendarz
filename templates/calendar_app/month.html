@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="chips">
-                        {% for r in item.reminders|slice:':3' %}
+                        {% for r in item.reminders|slice:':2' %}
                             <div class="chip rem {% if r.completed %}done{% endif %}">
                                 {% if r.time %}{{ r.time|time:'H:i' }} · {% endif %}{{ r.title }}
                             </div>

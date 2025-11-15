@@ -1,4 +1,4 @@
-:root { --bg: #ffffff; --panel: #ffffff; --accent: #e8ebef; --text: #100f0f; --muted: #100f0f; --ok: #af3ddc; --danger:#ff6b6b; }
+:root { --bg: #ffffff; --panel: #6ab8bf; --accent: #e8ebef; --text: #100f0f; --muted: #100f0f; --ok: #76d529; --danger:#ff6b6b; }
 * { box-sizing: border-box; }
 body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:var(--bg); color:var(--text); }
 a { color: inherit; text-decoration: none; }
@@ -11,14 +11,23 @@ header h1 { font-size: 18px; margin:0; font-weight:600; }
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .grid { display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
 .weekday { text-align:center; color: var(--muted); font-weight:600; padding:8px 0; }
-.day { border-radius: 10px; background: #d0c1ea; min-height: 120px; padding: 8px; display:flex; flex-direction:column; gap:6px; outline:1px solid #22345f; }
+.day {
+    border-radius: 10px;
+    background: linear-gradient(135deg, #d0c1ea 0%, #448cac 100%);
+    min-height: 120px;
+    padding: 8px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    outline:1px solid #22345f;
+}
 .day.other { opacity: 0.5; }
 .day .top { display:flex; align-items:center; justify-content:space-between; }
 .day .num { font-weight:700; }
-.today { outline:4px solid var(--ok); }
+.today { outline:8px solid var(--ok); }
 .chips { display:flex; flex-direction:column; gap:4px; margin-top:auto; }
-.chip { background: var(--panel); border-radius: 8px; padding:4px 6px; font-size:12px; color: var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.chip.rem { color: #072f54; }
+.chip { background: linear-gradient(135deg, #eac1dd 0%, #cc412f 100%);; border-radius: 8px; padding:4px 6px; font-size:12px; color: var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.chip.rem {  background: linear-gradient(135deg, #eac1e5 0%, #a0cc2f 100%); }
 .chip.done { color: var(--ok); text-decoration: line-through; opacity: 0.8; }
 .lists { display:grid; grid-template-columns: 1fr; gap:16px; }
 @media (min-width: 900px) { .lists { grid-template-columns: 1fr 1fr; } }

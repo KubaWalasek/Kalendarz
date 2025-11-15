@@ -14,8 +14,8 @@
 <header>
     <div class="nav">
         {% if url == 'month' %}
-        <a class="btn secondary" href="{% url 'calendar_app:month' year=prev_month.year month=prev_month.month %}">◀ Poprzedni miesiąc </a>
-        <a class="btn secondary" href="{% url 'calendar_app:month' year=next_month.year month=next_month.month %}">Następny miesiąc ▶</a>
+        <a class="btn secondary" href="{% url 'calendar_app:month' year=prev_month.year month=prev_month.month %}">◀ PREV </a>
+        <a class="btn secondary" href="{% url 'calendar_app:month' year=next_month.year month=next_month.month %}">NEXT ▶</a>
         {% elif url == 'day' %}
         <a class="btn secondary" href="{% url 'calendar_app:day' year=prev_day.year month=prev_day.month day=prev_day.day %}">Poprzedni dzień</a>
         <a class="btn secondary" href="{% url 'calendar_app:day' year=next_day.year month=next_day.month day=next_day.day %}">Następny dzień</a>
