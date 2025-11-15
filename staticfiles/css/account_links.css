@@ -8,17 +8,19 @@
 }
 
 .container {
-    flex: 1;  /* zajmuje dostępną przestrzeń */
+    flex: 1;
     max-width: 1200px;
-    margin: auto;  /* usuń auto margin z oryginalnego .container */
-    padding: 0;  /* usuń padding jeśli chcesz */
+    padding: 0;
 }
 
 .sidebar {
-    position: absolute;
-    right: 46px;
-    top: 80px;  /* dostosuj do wysokości headera */
+    flex-shrink: 0;
+    width: 200px;
+    position: sticky;
+    top: 80px;
+    align-self: flex-start;
 }
+
 .accounts-links{
     position:static;
     display:flex;
@@ -55,12 +57,27 @@
     filter:saturate(115%);
 }
 
-/* Dla mniejszych ekranów trochę zmniejsz */
-@media (max-width: 480px){
-    .accounts-links{
-        top:8px; right:8px; gap:8px; padding:5px 6px;
+
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+        padding: 8px;
     }
-    .accounts-link img{
-        width:24px; height:24px; border-radius:7px;
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        order: 2;
+    }
+
+    .accounts-links {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 60px;
+        width: fit-content;
     }
 }
+
+
