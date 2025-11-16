@@ -42,3 +42,23 @@ class Reminder(models.Model):
         t = f" {self.time}" if self.time else ""
         done = "✓ " if self.completed else ""
         return f"{done}{self.date}{t} — {self.title}"
+
+
+class CalendarBackground(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Nazwa tła")
+    image = models.ImageField(upload_to='backgrounds/', verbose_name="Zdjęcie")
+    is_active = models.BooleanField(default=False, verbose_name="Aktywne")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Tło kalendarza"
+        verbose_name_plural = "Tła kalendarza"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if self.is_active:
+            CalendarBackground.objects.filter(is_active=True).update(is_active=False)
+        super().save(*args, **kwargs)

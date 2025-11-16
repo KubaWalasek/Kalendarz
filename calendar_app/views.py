@@ -11,7 +11,7 @@ from django.views import View
 from django.views.decorators.http import require_POST
 
 from workout.models import Workout
-from .models import DayNote, Reminder
+from .models import DayNote, Reminder, CalendarBackground
 from .forms import ReminderForm, DayNoteForm
 
 
@@ -67,6 +67,9 @@ def month_view(request: HttpRequest, year: int | None = None, month: int | None 
             "is_other": d.month != month,
         } for d in days]
 
+    active_background = CalendarBackground.objects.filter(is_active=True).first()
+    background_url = active_background.image.url if active_background else None
+
     context = {
         "year": year,
         "month": month,
@@ -77,7 +80,7 @@ def month_view(request: HttpRequest, year: int | None = None, month: int | None 
         "prev_month": {"year": prev_month_date.year, "month": prev_month_date.month},
         "next_month": {"year": next_month_date.year, "month": next_month_date.month},
         'url': 'month',
-        'background_image': request.session.get('background_image'),
+        'background_image': background_url,
     }
 
     return render(request, "calendar_app/month.html", context )
@@ -188,13 +191,16 @@ class DeleteNoteView(LoginRequiredMixin, View):
 
 
 def upload_image(request):
+    """Upload tła kalendarza - automatycznie trafia do Cloudinary"""
     if request.method == 'POST' and request.FILES.get('image'):
-        przeslany_plik_obraz = request.FILES['image']
-        system_plikow = FileSystemStorage(location=settings.MEDIA_ROOT, base_url=settings.MEDIA_URL)
-        zapisana_nazwa_pliku = system_plikow.save(przeslany_plik_obraz.name, przeslany_plik_obraz)
-        adres_url_zapisanego_pliku = system_plikow.url(zapisana_nazwa_pliku)
+        uploaded_image = request.FILES['image']
 
-        request.session['background_image'] = adres_url_zapisanego_pliku
+        # Stwórz nowy obiekt tła (automatycznie uploaduje do Cloudinary)
+        background = CalendarBackground.objects.create(
+            name=f"Tło {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+            image=uploaded_image,
+            is_active=True  # Automatycznie aktywuj nowe tło
+        )
 
         return redirect('calendar_app:month')
 
