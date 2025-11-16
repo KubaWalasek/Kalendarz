@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import cloudinary
 
 # Próba załadowania .env (jeśli jest)
 try:
@@ -46,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',  # ← PRZED staticfiles!
     'django.contrib.staticfiles',
-    'cloudinary_storage',
     'cloudinary',
     'calendar_app',
     'accounts',
@@ -158,11 +159,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
+cloudinary_url = os.getenv('CLOUDINARY_URL')
+if cloudinary_url:
+    cloudinary.config(cloudinary_url=cloudinary_url)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
 
 DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
