@@ -107,6 +107,9 @@ class DayView(LoginRequiredMixin, View):
         next_month_month = 1 if the_date.month == 12 else the_date.month + 1
         next_month_date = date_cls(next_month_year, next_month_month, 1)
 
+        active_background = CalendarBackground.objects.filter(is_active=True).first()
+        background_url = active_background.image.url if active_background else None
+
         return render(request, "calendar_app/day.html", {
             "date": the_date,
             "reminders": reminders,
@@ -120,7 +123,9 @@ class DayView(LoginRequiredMixin, View):
             "day_name": day_name,
             'next_day': next_day,
             'prev_day': prev_day,
-            'url': 'day'
+            'url': 'day',
+            'background_image': background_url,
+
         })
 
 

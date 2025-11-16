@@ -1,6 +1,23 @@
 {% extends 'calendar_app/base.html' %}
 {% block title %}{{ day_name }} {{ date|date:'j E Y' }}{% endblock %}
 {% block content %}
+
+    <style>
+        {% if background_image %}
+            body {
+                background-image: url('{{ background_image }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+
+            .container {
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 15px;
+                padding: 20px;
+            }
+        {% endif %}
+    </style>
 <div class="lists">
   <div>
     <h3>Przypomnienia</h3>
@@ -67,4 +84,15 @@
       {% endfor %}
     </div>
     <div style="margin-top:16px;"><a class="btn secondary" href="{% url 'calendar_app:month' year=date.year month=date.month %}">← Powrót do miesiąca</a></div>
+<style>
+    .accounts-link img{
+        width: 30px;
+        height: 30px;
+    }
+    .accounts-links{
+        margin-left: 80px;
+        margin-top: 57px;
+    }
+</style>
 {% endblock %}
+
