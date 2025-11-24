@@ -22,7 +22,7 @@ class RegisterView(UserPassesTestMixin, View):
 
     def get(self, request):
         form = CreateUserForm()
-        return render(request, 'account_form.html', {
+        return render(request, 'accounts/account_form.html', {
             'form': form,
             'url': 'register'
         })
@@ -33,7 +33,7 @@ class RegisterView(UserPassesTestMixin, View):
             form.save()
             messages.success(request, 'Account created successfully!')
             return redirect('user_account')
-        return render(request, 'account_form.html', {
+        return render(request, 'accounts/account_form.html', {
             'form': form,
             'url': 'register',
         })
@@ -47,7 +47,7 @@ class LoginView(View):
 
         if request.method == 'GET':
             form = LoginForm()
-            return render(request, 'account_form.html', {
+            return render(request, 'accounts/account_form.html', {
                 'form': form,
                 'url': 'login'
             })
@@ -60,7 +60,7 @@ class LoginView(View):
                 messages.success(request, 'You are logged in!')
                 return redirect('calendar_app:month')
             messages.error(request, 'Invalid username or password!')
-            return render(request, 'account_form.html', {
+            return render(request, 'accounts/account_form.html', {
                 'form': form,
                 'url': 'login'
             })
@@ -90,7 +90,7 @@ class UserAccountView(LoginRequiredMixin, View):
         adres, created = Adres.objects.get_or_create(user=user)
         adres_form = AdresForm(instance=adres)
 
-        return render(request, 'account_form.html', {
+        return render(request, 'accounts/account_form.html', {
             'form': update_user_form,
             'adres_form': adres_form,
             'url': 'user_account',
@@ -111,7 +111,7 @@ class UserAccountView(LoginRequiredMixin, View):
             adres_form.save()
             messages.success(request, 'Account updated successfully!')
             return redirect('user_account')
-        return render(request, 'account_form.html', {
+        return render(request, 'accounts/account_form.html', {
             'update_user_form': update_user_form,
             'adres_form': adres_form,
             'url': 'user_account',
@@ -121,7 +121,7 @@ class UserAccountView(LoginRequiredMixin, View):
 class UpdatePasswordView(LoginRequiredMixin, View):
     def get(self, request):
         form = UpdatePasswordForm(request.user)
-        return render(request, 'update_password.html', {'form': form})
+        return render(request, 'accounts/update_password.html', {'form': form})
 
     def post(self, request):
         form = UpdatePasswordForm(request.user, data=request.POST)
@@ -130,12 +130,12 @@ class UpdatePasswordView(LoginRequiredMixin, View):
             update_session_auth_hash(request, request.user)
             messages.success(request, 'Password updated successfully!')
             return redirect('user_account')
-        return render(request, 'update_password.html', {'form': form})
+        return render(request, 'accounts/update_password.html', {'form': form})
 
 class DeleteAccountView(LoginRequiredMixin, View):
     def get(self, request):
         form = DeleteUserForm(user=request.user)
-        return render(request, 'delete_account.html', {
+        return render(request, 'accounts/delete_account.html', {
             'form': form,
         })
 
@@ -145,6 +145,6 @@ class DeleteAccountView(LoginRequiredMixin, View):
             request.user.delete()
             messages.success(request, 'Account deleted successfully!')
             return redirect('login')
-        return render(request, 'delete_account.html', {
+        return render(request, 'accounts/delete_account.html', {
             'form': form,
         })

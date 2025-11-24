@@ -12,7 +12,7 @@
 <body>
 
 <div class="add-workout-container">
-    {% include 'accounts_links.html' %}
+    {% include 'accounts/accounts_links.html' %}
 
     <div class="add-workout-header">
         <h1 class="add-workout-title">Nowy Trening</h1>
@@ -21,6 +21,10 @@
 
     <form method="post" class="workout-form">
         {% csrf_token %}
+
+        {% if ai_workout %}
+        <input type="hidden" name="ai_workout" value="{{ ai_workout }}">
+        {% endif %}
 
         <div class="form-group form-group-with-icon">
             <label for="id_date" class="form-label">📅 Data treningu</label>

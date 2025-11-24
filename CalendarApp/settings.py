@@ -18,6 +18,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-dev-key-change-in-production')
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
+HOLIDAYS_API_KEY = os.getenv('HOLIDAYS_API_KEY')
+EXCHANGE_API_KEY = os.getenv('EXCHANGE_API_KEY')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
@@ -51,7 +55,9 @@ INSTALLED_APPS = [
     'cloudinary',
     'calendar_app',
     'accounts',
-    'workout'
+    'workout',
+    'rest_framework',
+    'apis_app'
 ]
 
 MIDDLEWARE = [
@@ -180,30 +186,30 @@ STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Logowanie
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-        },
-        "django.request": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-        "django.db.backends": {
-            "handlers": ["console"],
-            "level": "WARNING",
-            "propagate": False,
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#         },
+#         "django.request": {
+#             "handlers": ["console"],
+#             "level": "ERROR",
+#             "propagate": False,
+#         },
+#         "django.db.backends": {
+#             "handlers": ["console"],
+#             "level": "WARNING",
+#             "propagate": False,
+#         },
+#     },
+# }
 
 

@@ -11,7 +11,7 @@
 
 <body>
 <div class="workout-description-container">
-    {% include 'accounts_links.html' %}
+    {% include 'accounts/accounts_links.html' %}
 
     <div class="workout-description-header">
         <h1 class="workout-description-title">📝 Opis Treningu</h1>
@@ -67,28 +67,34 @@
 </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
         // Stylowanie textarea
-        const textarea = document.querySelector('textarea');
+        const textarea = document.querySelector('textarea[name="description"]');
+
         if (textarea) {
             textarea.classList.add('description-textarea');
-            textarea.placeholder = `Przykład:
-Dziś wykonałem trening klatki piersiowej i tricepsów.
+            {% if ai_workout %}
+                textarea.value = "{{ai_workout | escapejs }}";
+            {% else %}
+                textarea.placeholder = `Przykład:
+                    Dziś wykonałem trening klatki piersiowej i tricepsów.
 
-Wyciskanie sztangi płasko:
-- 4 serie po 8-10 powtórzeń
-- Ciężary: 80kg, 85kg, 85kg, 80kg
-- Dobre tempo, kontrolowane opuszczanie
+                    Wyciskanie sztangi płasko:
+                    - 4 serie po 8-10 powtórzeń
+                    - Ciężary: 80kg, 85kg, 85kg, 80kg
+                    - Dobre tempo, kontrolowane opuszczanie
 
-Wyciskanie hantli na skos:
-- 3 serie po 12 powtórzeń  
-- 2x25kg - czułem dobrą pracę mięśni
+                    Wyciskanie hantli na skos:
+                    - 3 serie po 12 powtórzeń
+                    - 2x25kg - czułem dobrą pracę mięśni
 
-Pompki diamentowe:
-- 3 serie do odmowy (12, 10, 8 powtórzeń)
+                    Pompki diamentowe:
+                    - 3 serie do odmowy (12, 10, 8 powtórzeń)
 
-Samopoczucie: 8/10
-Następnym razem zwiększę ciężar w wyciskaniu płasko.`;
+                    Samopoczucie: 8/10
+                    Następnym razem zwiększę ciężar w wyciskaniu płasko.`;
+            {% endif %}
 
             // Licznik znaków
             const charCount = document.getElementById('charCount');

@@ -2,11 +2,15 @@
 <div class="accounts-links">
 
     <a href="{% url 'calendar_app:month' %}" class="accounts-link" aria-label="Kalendarz">
-        <img src="{% static 'images/calendar.png' %}" alt="Zaproszenie" title="Kalendarz">
+        <img src="{% static 'images/calendar.png' %}" alt="Kalendarz" title="Kalendarz">
     </a>
 
     <a href="{% url 'workout:add_workout' %}" class="accounts-link" aria-label="Trening">
-        <img src="{% static 'images/gym.png' %}" alt="Zaproszenie" title="Trening">
+        <img src="{% static 'images/gym.png' %}" alt="Trening" title="Trening">
+    </a>
+
+<a href="{% url 'apis_app:workout_generator' %}" class="accounts-link" aria-label="TreningAI">
+        <img src="{% static 'images/AIgym.png' %}" alt="TreningAI" title="TreningAI">
     </a>
 
     <a href="{% url 'workout:workout_list' %}" class="accounts-link" aria-label="Lista">

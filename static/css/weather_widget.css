@@ -1,0 +1,60 @@
+.weather-widget {
+    margin: 0;
+    max-width: 320px;
+    background: linear-gradient(120deg, #fffde9 60%, #ffeec0 100%);
+    border-radius: 16px;
+    padding: 16px 18px 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+@media (max-width: 800px) {
+    .weather-widget {
+        max-width: 420px; /* lub inna wartość która pasuje obok loginów */
+        min-width: 0;
+        width: 100%;      /* lub auto; wypróbuj co najlepiej wygląda w Twoim wierszu */
+        font-size: 1em;
+        padding: 12px 10px;   /* ewentualnie powiększ padding na szerokość */
+    }
+}
+
+.weather-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.weather-city {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #254463;
+    letter-spacing: 0.5px;
+}
+
+.weather-icon {
+    width: 150px;
+    height: 150px;
+    margin-left: 8px;
+}
+
+.weather-main {
+    margin-top: 8px;
+    font-size: 2.1em;
+    font-weight: bold;
+    color: #0066c0;
+}
+
+.weather-desc {
+    margin-top: 6px;
+    color: #000dff;
+    font-size: 2em;
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 0.1px;
+}
+
+.weather-error {
+    color: #c00;
+    font-weight: 500;
+    text-align: center;
+    padding: 8px 0;
+}

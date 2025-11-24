@@ -11,7 +11,7 @@
 
 <body>
 <div class="workout-detailed-container">
-    {% include 'accounts_links.html' %}
+    {% include 'accounts/accounts_links.html' %}
 
     <div class="workout-detailed-header">
         <h1 class="workout-detailed-title">📊 Szczegółowy Plan Treningu</h1>
@@ -59,6 +59,12 @@
 <script>
     let exerciseCount = 0;
 
+     {% if ai_workout %}
+        // Dane z AI
+        const aiWorkout = {{ ai_workout|safe }};
+        {% endif %}
+
+
     document.getElementById('add-exercise').addEventListener('click', function() {
         addExercise();
     });
@@ -76,7 +82,7 @@
                        class="exercise-name-input">
                 
                 <div class="sets-container" id="sets_${exerciseCount}">
-                    <h4 style="margin: 0 0 15px 0; color: #667eea;">📋 Serie:</h4>
+
                 </div>
                 
                 <div class="exercise-actions">
@@ -148,8 +154,82 @@
         button.closest('.exercise-block').remove();
     }
 
-    // Dodaj pierwsze ćwiczenie na start
-    addExercise();
+    {% if ai_workout %}
+        // Załaduj trening z AI
+        if (aiWorkout && aiWorkout.exercises) {
+            aiWorkout.exercises.forEach(exercise => {
+                addExerciseFromAI(exercise);
+            });
+        }
+        {% else %}
+        // Dodaj pierwsze ćwiczenie na start
+        addExercise();
+        {% endif %}
+
+        function addExerciseFromAI(exerciseData) {
+            exerciseCount++;
+            const container = document.getElementById('exercises-container');
+            const exerciseDiv = document.createElement('div');
+            exerciseDiv.className = 'exercise-block';
+            exerciseDiv.innerHTML = `
+                <input type="text"
+                       name="exercise_${exerciseCount}_name"
+                       value="${exerciseData.name}"
+                       class="exercise-name-input">
+
+                <div class="sets-container" id="sets_${exerciseCount}">
+
+                </div>
+
+                <div class="exercise-actions">
+                    <button type="button" onclick="addSet(${exerciseCount})" class="btn secondary">
+                        ➕ Dodaj serię
+                    </button>
+                    <button type="button" onclick="removeExercise(this)" class="btn danger">
+                        🗑️ Usuń ćwiczenie
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(exerciseDiv);
+
+            // Dodaj serie z AI
+            exerciseData.sets.forEach((set, index) => {
+                addSetFromAI(exerciseCount, index + 1, set);
+            });
+        }
+
+        function addSetFromAI(exerciseId, setNumber, setData) {
+            const setsContainer = document.getElementById(`sets_${exerciseId}`);
+            const setDiv = document.createElement('div');
+            setDiv.className = 'set-row';
+            setDiv.innerHTML = `
+                <span>Seria ${setNumber}:</span>
+                <input type="number"
+                       name="exercise_${exerciseId}_set_${setNumber}_weight"
+                       value="${setData.weight}"
+                       step="0.5"
+                       style="width: 100px;">
+                <span>kg ×</span>
+                <input type="number"
+                       name="exercise_${exerciseId}_set_${setNumber}_reps"
+                       value="${setData.reps}"
+                       style="width: 80px;">
+                <span>=</span>
+                <input type="number"
+                       name="exercise_${exerciseId}_set_${setNumber}_done"
+                       placeholder="Wykonane"
+                       style="width: 80px;">
+                <button type="button"
+                        onclick="removeSet(this)"
+                        data-exercise-id="${exerciseId}"
+                        class="btn danger"
+                        style="padding: 6px 12px;">
+                    ❌
+                </button>
+            `;
+            setsContainer.appendChild(setDiv);
+        }
 </script>
 </body>
 </html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API's</title>
+    {% load static %}
+        <link rel="stylesheet" href="{% static 'css/weather_widget.css' %}">
+</head>
+
+<body>
+<div class="weather-widget">
+    {% if weather.error %}
+        <div class="weather-error">{{ weather.error }}</div>
+    {% else %}
+        <div class="weather-top">
+            <span class="weather-city">{{ weather.city }}</span>
+            <img class="weather-icon" src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="ikona pogody">
+        </div>
+        <div class="weather-main">
+            <span class="weather-temp">{{ weather.temp|floatformat:1 }}°C</span>
+        </div>
+        <div class="weather-desc">{{ weather.description|capfirst }}</div>
+    {% endif %}
+</div>
+
+<div>
+    {% if holidays %}
+        {% for holiday in holidays %}
+            <h1>{{ holiday.name }} {{ holiday.date }}</h1>
+        {% endfor %}
+    {% endif %}
+    {% if message %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+</div>
+
+<div>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="currency_from" placeholder="Z waluty (np. PLN)">
+    <input type="text" name="currency_to" placeholder="Do waluty (np. USD)">
+
+    <button type="submit">Pobierz kurs</button>
+</form>
+
+{% if currency_rate %}
+    <div>
+        <h3>Wynik: {{ exchange_info.exchange_rates }}</h3>
+        <p>Waluta bazowa: {{ from_currency }}</p>
+        <p>Waluta docelowa: {{ to_currency }}</p>
+        <p>Kurs: 1 {{ from_currency }} = {{ currency_rate }} {{ to_currency }}</p>
+    </div>
+{% endif %}
+
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% endif %}
+</div>
+
+<div>
+    <img src="data:image/png;base64,{{ avatar }}" alt="avatar">
+</div>
+
+<!-- Gdzieś w apis_template.html -->
+
+<h2>Pobierz pogodę przez JavaScript API</h2>
+<div id="weather-api-result"></div>
+<button onclick="fetchWeather()">Pobierz pogodę przez API</button>
+
+<script>
+    function fetchWeather() {
+        fetch('/apis/weather_api/')
+            .then(response => response.json())
+            .then(data => {
+                const div = document.getElementById('weather-api-result');
+                if (data.error) {
+                    div.innerHTML = `<p style="color: red;">${data.error}</p>`;
+                } else {
+                    div.innerHTML = `
+                    <h3>${data.city}</h3>
+                    <p>Temperatura: ${data.temp}°C</p>
+                    <p>Opis: ${data.description}</p>
+                    <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png">
+                `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+</body>

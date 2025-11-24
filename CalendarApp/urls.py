@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('calendar_app.urls', namespace='calendar_app')),
     path('accounts/', include('accounts.urls')),
     path('workout/', include('workout.urls')),
+    path('apis/', include('apis_app.urls')),
 ]
 
 if settings.DEBUG:

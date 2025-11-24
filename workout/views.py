@@ -9,7 +9,12 @@ import json
 class AddWorkoutView(LoginRequiredMixin, View):
     def get(self, request):
         form = WorkoutForm()
-        return render(request, 'add_workout.html', {'form': form})
+        ai_workout = request.GET.get('ai_workout')
+        return render(request, 'workout/add_workout.html', {
+            'form': form,
+            'ai_workout': ai_workout
+            }
+                      )
 
     def post(self, request):
         form = WorkoutForm(request.POST)
@@ -19,19 +24,23 @@ class AddWorkoutView(LoginRequiredMixin, View):
             workout.user = user
             workout_detail_type = form.cleaned_data['workout_detail_type']
 
+            ai_workout = request.POST.get('ai_workout')
+
             if workout_detail_type == 'description':
-                return render(request, 'workout_description.html', {
+                return render(request, 'workout/workout_description.html', {
                     'workout': workout,
-                    'description_form': WorkoutDescriptionForm()
+                    'description_form': WorkoutDescriptionForm(),
+                    'ai_workout': ai_workout,
                 })
             else:
-                return render(request, 'workout_detailed.html', {
+                return render(request, 'workout/workout_detailed.html', {
                     'workout': workout,
+                    'ai_workout': ai_workout,
                 })
         else:
             form = WorkoutForm()
 
-        return render(request, 'add_workout.html', {'form': form})
+        return render(request, 'workout/add_workout.html', {'form': form})
 
 
 class SaveDescriptionView(LoginRequiredMixin, View):
@@ -53,7 +62,7 @@ class SaveDescriptionView(LoginRequiredMixin, View):
             return redirect('calendar_app:month')
 
         # Jeśli formularz nieprawidłowy, wróć z błędami
-        return render(request, 'workout_description.html', {
+        return render(request, 'workout/workout_description.html', {
             'description_form': form,
             'workout': {
                 'date': request.POST.get('date'),
@@ -153,10 +162,19 @@ class SaveDetailedView(LoginRequiredMixin, View):
 class WorkoutListView(LoginRequiredMixin, View):
     def get(self, request):
         workouts = Workout.objects.filter(user=request.user).order_by('-date')
-        return render(request, 'workout_list.html', {'workouts': workouts})
+        return render(request, 'workout/workout_list.html', {'workouts': workouts})
 
 
 class WorkoutDisplayView(LoginRequiredMixin, View):
     def get(self, request,pk):
         workout = Workout.objects.get(pk=pk, user=request.user)
-        return render(request, 'workout_display.html', {'workout': workout})
+        total_sets = 0
+        if workout.set.get('type') == 'detailed':
+            for exercise in workout.set.get('exercises', []):
+                total_sets += len(exercise.get('sets', []))
+
+        return render(request, 'workout/workout_display.html',{
+            'workout': workout,
+            'total_sets': total_sets
+        }
+                      )

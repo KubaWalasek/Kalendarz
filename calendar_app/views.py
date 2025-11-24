@@ -1,15 +1,9 @@
 from datetime import date as date_cls, datetime, timedelta
 import calendar
-
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
 from django.views import View
-from django.views.decorators.http import require_POST
-
 from workout.models import Workout
 from .models import DayNote, Reminder, CalendarBackground
 from .forms import ReminderForm, DayNoteForm
@@ -127,7 +121,6 @@ class DayView(LoginRequiredMixin, View):
             'background_image': background_url,
 
         })
-
 
 
 class AddReminderView(LoginRequiredMixin, View):

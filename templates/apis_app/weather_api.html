@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather API Test</title>
+</head>
+<body>
+<h1>Test Weather API z JavaScript</h1>
+
+<div id="weather-api-result"></div>
+<button onclick="fetchWeather()">Pobierz pogodę przez API</button>
+
+<script>
+    function fetchWeather() {
+        fetch('/apis/weather_api/')
+            .then(response => response.json())
+            .then(data => {
+                const div = document.getElementById('weather-api-result');
+                if (data.error) {
+                    div.innerHTML = `<p style="color: red;">${data.error}</p>`;
+                } else {
+                    div.innerHTML = `
+                        <h3>${data.city}</h3>
+                        <p>Temperatura: ${data.temp}°C</p>
+                        <p>Opis: ${data.description}</p>
+                        <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png">
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+</body>
+</html>

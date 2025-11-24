@@ -85,12 +85,10 @@
                     </div>
                     <div class="stat">
                     <span class="stat-number">
-                        {% widthratio workout.set.exercises|length 1 1 %}
-                        {% for ex in workout.set.exercises %}
-                            {% widthratio ex.sets|length 1 1 %}
-                        {% endfor %}
+                        <span class="stat-number">{{ total_sets }}</span>
+                        <span class="stat-label">Serii ogółem</span>
                     </span>
-                        <span class="stat-label">Serii</span>
+
                     </div>
                     <div class="stat">
                         <span class="stat-number">⏱️</span>
@@ -112,7 +110,7 @@
         <a href="#" class="btn danger">Usuń trening</a>
     </div>
 
-{% include 'accounts_links.html' %}
+{% include 'accounts/accounts_links.html' %}
 
 </body>
 

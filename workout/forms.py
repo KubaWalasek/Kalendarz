@@ -20,6 +20,6 @@ class WorkoutForm(forms.ModelForm):
 
 class WorkoutDescriptionForm(forms.Form):
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4}),
+        widget=forms.Textarea(attrs={'rows': 8}),
         label='Opis treningu'
     )
