@@ -28,3 +28,4 @@ uvloop==0.22.1
 watchfiles==1.1.1
 websockets==15.0.1
 whitenoise==6.6.0
+djangorestframework
